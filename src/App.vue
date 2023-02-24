@@ -48,7 +48,7 @@ export default {
         >
       <label for="toggle-all">Mark all as completed</label>
       <ul class="todo-list">
-        <li class="todo" v-for="todo in todos">
+        <li class="todo" v-for="todo in todos" :class="todo.completed && ('completed')">
           <div class="view">
             <input type="checkbox" class="toggle" v-model="todo.completed">
             <label for="toggle">{{ todo.title }}</label>
