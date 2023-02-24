@@ -1,11 +1,26 @@
-<script setup>
+<script>
+export default {
+  data() {
+    return {
+      todos: []
+    }
+  },
+  methods: {
+    addTodo(e) {
+      const title = e.target.value.trim();
+      if(!title) return;
+      this.todos.push({id: Date.now(), title, completed: false});
+      e.target.value = "";
+    }
+  }
+}
 </script>
 
 <template>
   <section class="todoapp">
     <header class="header">
       <h1>todos</h1>
-      <input type="text" class="new-todo">
+      <input type="text" class="new-todo" @keyup.enter="addTodo" autofocus placeholder="What needs to be done?">
     </header>
     <section class="main">
       <input type="text" class="toggle-all">
