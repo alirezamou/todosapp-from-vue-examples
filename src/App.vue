@@ -99,8 +99,8 @@ export default {
     </section>
     <footer class="footer" v-if="todos.length">
       <span class="todo-count">
-        <strong></strong>
-        <span></span>
+        <strong>{{ remaining }}</strong>
+        <span>{{ remaining > 1 ? ' Items' : ' Item' }} left</span>
       </span>
       <ul class="filters">
         <li><a href="#all" :class="{ selected: visibility === 'all' }">All</a></li>
