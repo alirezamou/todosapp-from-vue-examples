@@ -84,7 +84,7 @@ export default {
         <li><a href="#active" :class="{ selected: visibility === 'active'}" >Active</a></li>
         <li><a href="#completed" :class="{ selected: visibility === 'completed' }">Completed</a></li>
       </ul>
-      <button class="clear-completed" @click="clearCompleted">Clear completed</button>
+      <button class="clear-completed" @click="clearCompleted" v-if="todos.length > remaining">Clear completed</button>
     </footer>
   </section>
 </template>
