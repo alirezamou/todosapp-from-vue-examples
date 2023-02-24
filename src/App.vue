@@ -26,10 +26,10 @@ export default {
       <input type="text" class="toggle-all">
       <label for="toggle-all">Mark all as completed</label>
       <ul class="todo-list">
-        <li class="todo">
+        <li class="todo" v-for="todo in todos">
           <div class="view">
             <input type="text" class="toggle">
-            <label for="toggle"></label>
+            <label for="toggle">{{ todo.title }}</label>
             <button class="destroy"></button>
           </div>
           <input type="text" class="edit">
