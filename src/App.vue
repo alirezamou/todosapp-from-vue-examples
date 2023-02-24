@@ -1,16 +1,28 @@
 <script>
+const filters = {
+  all: todos => todos,
+  active: todos => todos.filter(todo => !todo.completed),
+  completed: todos => todos.filter(todo => todo.completed)
+};
 export default {
   data() {
     return {
       // Added dummy todos. removes later
       todos: [{id: 1, title: "todo-1", completed: true},
-              {id: 2, title: "todo-2", completed: false}]
+              {id: 2, title: "todo-2", completed: false}],
+      visibility: 'all'
     }
   },
   computed: {
     remaining() {
       return this.todos.filter(todo => !todo.completed).length;
+    },
+    filteredTodos() {
+      return filters[this.visibility](this.todos);
     }
+  },
+  mounted() {
+    window.addEventListener('hashchange', this.onHashChange);
   },
   methods: {
     addTodo(e) {
@@ -27,6 +39,10 @@ export default {
     },
     clearCompleted() {
       this.todos = this.todos.filter(todo => !todo.completed);
+    },
+    onHashChange() {
+      const filter = location.hash.replace("#", "");
+      this.visibility = filter;
     }
   }
 }
@@ -48,7 +64,7 @@ export default {
         >
       <label for="toggle-all">Mark all as completed</label>
       <ul class="todo-list">
-        <li class="todo" v-for="todo in todos" :class="todo.completed && ('completed')">
+        <li class="todo" v-for="todo in filteredTodos" :class="todo.completed && ('completed')">
           <div class="view">
             <input type="checkbox" class="toggle" v-model="todo.completed">
             <label for="toggle">{{ todo.title }}</label>
@@ -64,9 +80,9 @@ export default {
         <span></span>
       </span>
       <ul class="filters">
-        <li><a href="#/all" :class="{ selected: visibility === 'all' }">All</a></li>
-        <li><a href="#/active" :class="{ selected: visibility === 'active'}" >Active</a></li>
-        <li><a href="#/completed" :class="{ selected: visibility === 'completed' }">Completed</a></li>
+        <li><a href="#all" :class="{ selected: visibility === 'all' }">All</a></li>
+        <li><a href="#active" :class="{ selected: visibility === 'active'}" >Active</a></li>
+        <li><a href="#completed" :class="{ selected: visibility === 'completed' }">Completed</a></li>
       </ul>
       <button class="clear-completed" @click="clearCompleted">Clear completed</button>
     </footer>
