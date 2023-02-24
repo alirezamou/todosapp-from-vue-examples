@@ -10,7 +10,8 @@ export default {
       // Added dummy todos. removes later
       todos: [{id: 1, title: "todo-1", completed: true},
               {id: 2, title: "todo-2", completed: false}],
-      visibility: 'all'
+      visibility: 'all',
+      editedTodo: null
     }
   },
   computed: {
@@ -43,6 +44,20 @@ export default {
     onHashChange() {
       const filter = location.hash.replace("#", "");
       this.visibility = filter;
+    },
+    editTodo(todo) {
+      this.editTitleBefore = todo.title;
+      this.editedTodo = todo;
+    },
+    doneEdit(todo) {
+      if(!this.editedTodo) return;
+      this.editedTodo = null;
+      if(todo.title.trim() === "")
+        this.removeTodo(todo);
+    },
+    cancelEdit(todo) {
+      todo.title = this.editTitleBefore;
+      this.editedTodo = null;
     }
   }
 }
@@ -64,13 +79,21 @@ export default {
         >
       <label for="toggle-all">Mark all as completed</label>
       <ul class="todo-list">
-        <li class="todo" v-for="todo in filteredTodos" :class="todo.completed && ('completed')">
+        <li class="todo" v-for="todo in filteredTodos" :class="{completed: todo.completed, editing: (todo === editedTodo) }">
           <div class="view">
             <input type="checkbox" class="toggle" v-model="todo.completed">
-            <label for="toggle">{{ todo.title }}</label>
+            <label for="toggle" @dblclick="editTodo(todo)">{{ todo.title }}</label>
             <button class="destroy" @click="removeTodo(todo)"></button>
           </div>
-          <input type="text" class="edit">
+          <input 
+            type="text" 
+            class="edit" 
+            v-model="todo.title" 
+            v-if="todo === editedTodo" 
+            @keyup.enter="doneEdit(todo)" 
+            @keyup.escape="cancelEdit(todo)"
+            @blur="cancelEdit(todo)"
+            @vue:mounted="({ el }) => el.focus()">
         </li>
       </ul>
     </section>
