@@ -7,6 +7,11 @@ export default {
               {id: 2, title: "todo-2", completed: false}]
     }
   },
+  computed: {
+    remaining() {
+      return this.todos.filter(todo => !todo.completed).length;
+    }
+  },
   methods: {
     addTodo(e) {
       const title = e.target.value.trim();
@@ -16,6 +21,9 @@ export default {
     },
     removeTodo(todo) {
       this.todos = this.todos.filter(t => t.id !== todo.id);
+    },
+    toggleAll(e) {
+      this.todos.forEach(todo => todo.completed = e.target.checked)
     }
   }
 }
@@ -28,7 +36,13 @@ export default {
       <input type="text" class="new-todo" @keyup.enter="addTodo" autofocus placeholder="What needs to be done?">
     </header>
     <section class="main">
-      <input type="text" class="toggle-all">
+      <input 
+        type="checkbox" 
+        id="toggle-all" 
+        class="toggle-all" 
+        @change="toggleAll"
+        :checked="remaining === 0"
+        >
       <label for="toggle-all">Mark all as completed</label>
       <ul class="todo-list">
         <li class="todo" v-for="todo in todos">
