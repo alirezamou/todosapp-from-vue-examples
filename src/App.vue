@@ -2,7 +2,9 @@
 export default {
   data() {
     return {
-      todos: []
+      // Added dummy todos. removes later
+      todos: [{id: 1, title: "todo-1", completed: true},
+              {id: 2, title: "todo-2", completed: false}]
     }
   },
   methods: {
@@ -31,7 +33,7 @@ export default {
       <ul class="todo-list">
         <li class="todo" v-for="todo in todos">
           <div class="view">
-            <input type="text" class="toggle">
+            <input type="checkbox" class="toggle" v-model="todo.completed">
             <label for="toggle">{{ todo.title }}</label>
             <button class="destroy" @click="removeTodo(todo)"></button>
           </div>
