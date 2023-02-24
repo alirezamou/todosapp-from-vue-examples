@@ -11,6 +11,9 @@ export default {
       if(!title) return;
       this.todos.push({id: Date.now(), title, completed: false});
       e.target.value = "";
+    },
+    removeTodo(todo) {
+      this.todos = this.todos.filter(t => t.id !== todo.id);
     }
   }
 }
@@ -30,7 +33,7 @@ export default {
           <div class="view">
             <input type="text" class="toggle">
             <label for="toggle">{{ todo.title }}</label>
-            <button class="destroy"></button>
+            <button class="destroy" @click="removeTodo(todo)"></button>
           </div>
           <input type="text" class="edit">
         </li>
