@@ -39,7 +39,7 @@ export default {
         </li>
       </ul>
     </section>
-    <footer class="footer">
+    <footer class="footer" v-if="todos.length">
       <span class="todo-count">
         <strong></strong>
         <span></span>
