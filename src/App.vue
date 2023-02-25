@@ -1,4 +1,5 @@
 <script>
+const STORAGE_KEY = "todos_key";
 const filters = {
   all: todos => todos,
   active: todos => todos.filter(todo => !todo.completed),
@@ -7,11 +8,17 @@ const filters = {
 export default {
   data() {
     return {
-      // Added dummy todos. removes later
-      todos: [{id: 1, title: "todo-1", completed: true},
-              {id: 2, title: "todo-2", completed: false}],
+      todos: JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"),
       visibility: 'all',
       editedTodo: null
+    }
+  },
+  watch: {
+    todos: {
+      handler(todos) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+      },
+      deep: true
     }
   },
   computed: {
